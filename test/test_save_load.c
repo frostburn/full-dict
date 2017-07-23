@@ -1,0 +1,31 @@
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "full-dict/indicator.h"
+
+int some_indicator(keys_t key) {
+    return ((((key ^ 12398) + 234) * 329879) % 7) == 5;
+}
+
+int main() {
+    size_t size = 2048;
+    char *buffer = malloc(size * sizeof(char));
+    buffer[50] = 111;
+    FILE *stream = fmemopen(buffer, size, "w+");
+    assert(stream);
+    IndicatorDict *dict = malloc(sizeof(IndicatorDict));
+    keys_t key_space_size = 200;
+    indicator_dict_init(dict, some_indicator, key_space_size, 16);
+    indicator_dict_write(dict, stream);
+    fclose(stream);
+    IndicatorDict *other = malloc(sizeof(IndicatorDict));
+    char *rest = indicator_dict_associate(other, buffer);
+
+    assert(rest < buffer + size);
+    assert(dict->min_key == other->min_key);
+    assert(dict->max_key == other->max_key);
+    assert(dict->num_keys == other->num_keys);
+
+    return 0;
+}
