@@ -11,9 +11,8 @@ int compare(const void *a, const void *b) {
 }
 
 int main() {
-    FullDict *dict = malloc(sizeof(FullDict));
     short int value;
-    full_dict_init(dict, sizeof(short int), compare);
+    FullDict *dict = full_dict_new(sizeof(short int), compare);
     value = 1;
     full_dict_append(dict, &value);
     value = 2;
@@ -42,4 +41,6 @@ int main() {
     assert(full_dict_index(dict, &value) == 3);
     value = 3;
     assert(full_dict_index(dict, &value) == 2);
+
+    full_dict_delete(dict);
 }

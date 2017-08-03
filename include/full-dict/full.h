@@ -25,7 +25,8 @@ typedef struct FullDict {
     int valid;
 } FullDict;
 
-void full_dict_init(FullDict *dict, size_t key_size, int(*compare)(const void *, const void *));
+FullDict* full_dict_new(size_t key_size, int(*compare)(const void *, const void *));
+void full_dict_delete(FullDict *dict);
 int full_dict_contains(FullDict *dict, void *key);
 void full_dict_append(FullDict *dict, void *key);
 void full_dict_add(FullDict *dict, void *key);

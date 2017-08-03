@@ -8,9 +8,8 @@ int some_indicator(keys_t key) {
 }
 
 int main() {
-    IndicatorDict *dict = malloc(sizeof(IndicatorDict));
     keys_t key_space_size = 99;
-    indicator_dict_init(dict, some_indicator, key_space_size, 10);
+    IndicatorDict *dict = indicator_dict_new(some_indicator, key_space_size, 10);
     assert(dict->num_keys == 14);
     assert(dict->min_key == 3);
     assert(dict->max_key == 91);
@@ -22,5 +21,6 @@ int main() {
         assert(key == MEMBERS[index++]);
         key = indicator_dict_next(dict, key);
     }
+    indicator_dict_delete(dict);
     return 0;
 }

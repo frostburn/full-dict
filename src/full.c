@@ -4,12 +4,19 @@
 
 #include "full-dict/full.h"
 
-void full_dict_init(FullDict *dict, size_t key_size, int(*compare)(const void *, const void *)) {
+FullDict* full_dict_new(size_t key_size, int(*compare)(const void *, const void *)) {
+    FullDict *dict = malloc(sizeof(FullDict));
     dict->keys = NULL;
     dict->key_size = key_size;
     dict->compare = compare;
     dict->num_keys = dict->num_sorted = dict->size = 0;
     dict->valid = 0;
+    return dict;
+}
+
+void full_dict_delete(FullDict *dict) {
+    free(dict->keys);
+    free(dict);
 }
 
 int full_dict_contains(FullDict *dict, void *key) {

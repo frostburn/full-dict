@@ -14,9 +14,8 @@ int main() {
     buffer[50] = 111;
     FILE *stream = fmemopen(buffer, size, "w+");
     assert(stream);
-    IndicatorDict *dict = malloc(sizeof(IndicatorDict));
     keys_t key_space_size = 200;
-    indicator_dict_init(dict, some_indicator, key_space_size, 16);
+    IndicatorDict *dict = indicator_dict_new(some_indicator, key_space_size, 16);
     indicator_dict_write(dict, stream);
     fclose(stream);
     IndicatorDict *other = malloc(sizeof(IndicatorDict));
@@ -27,5 +26,6 @@ int main() {
     assert(dict->max_key == other->max_key);
     assert(dict->num_keys == other->num_keys);
 
+    indicator_dict_delete(dict);
     return 0;
 }

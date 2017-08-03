@@ -35,14 +35,18 @@ typedef struct IndicatorDict
 } IndicatorDict;
 
 /*
-    Initializes an indicator dictionary
+    Returns a pointer to a new initialized IndicatorDict
 
-    dict: Uninitialized pointer to an IndicatorDict
     indicator: Function that returns non-zero for keys that should be included in the index
     key_space_size: Size of the key space of the indicator function
     memory_constant: How light the dictionary should be on memory.
 */
-void indicator_dict_init(IndicatorDict *dict, indicator_fun indicator, keys_t key_space_size, size_t memory_constant);
+IndicatorDict* indicator_dict_new(indicator_fun indicator, keys_t key_space_size, size_t memory_constant);
+
+/*
+    Properly frees the memory used by an IndicatorDict
+*/
+void indicator_dict_delete(IndicatorDict *dict);
 
 /*
     Returns the index of the given key

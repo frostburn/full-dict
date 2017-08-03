@@ -8,7 +8,9 @@
 
 #define HINT_MAX (255)
 
-void indicator_dict_init(IndicatorDict *dict, indicator_fun indicator, keys_t key_space_size, size_t memory_constant) {
+IndicatorDict* indicator_dict_new(indicator_fun indicator, keys_t key_space_size, size_t memory_constant) {
+    IndicatorDict *dict = malloc(sizeof(IndicatorDict));
+
     dict->indicator = indicator;
     dict->num_keys = 0;
     dict->min_key = ~0ULL;
@@ -44,6 +46,14 @@ void indicator_dict_init(IndicatorDict *dict, indicator_fun indicator, keys_t ke
     dict->num_checkpoints = ceil_div(dict->max_key + 1, memory_constant);
     dict->checkpoints = (checkpoint_t*) realloc(dict->checkpoints, dict->num_checkpoints * sizeof(checkpoint_t));
     dict->hints = (hint_t*) realloc(dict->hints, dict->num_checkpoints * sizeof(hint_t));
+
+    return dict;
+}
+
+void indicator_dict_delete(IndicatorDict *dict) {
+    free(dict->checkpoints);
+    free(dict->hints);
+    free(dict);
 }
 
 size_t indicator_dict_index(IndicatorDict *dict, keys_t key) {
@@ -60,7 +70,7 @@ size_t indicator_dict_index(IndicatorDict *dict, keys_t key) {
 
 keys_t indicator_dict_next(IndicatorDict *dict, keys_t last) {
     if (last > dict->max_key) {
-        return ~0;
+        return ~0ULL;
     }
     while(1) {
         if (dict->indicator(++last)) {
