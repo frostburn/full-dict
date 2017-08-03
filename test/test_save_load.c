@@ -26,6 +26,5 @@ int main() {
     assert(dict->max_key == other->max_key);
     assert(dict->num_keys == other->num_keys);
 
-    indicator_dict_delete(dict);
     return 0;
 }

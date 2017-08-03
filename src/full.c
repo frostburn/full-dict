@@ -88,3 +88,17 @@ void* full_dict_key(FullDict *dict, size_t index) {
     assert(dict->valid);
     return dict->keys + index * dict->key_size;
 }
+
+void full_dict_write(FullDict *dict, FILE *stream) {
+    fwrite((void*) dict, sizeof(FullDict), 1, stream);
+    fwrite((void*) dict->keys, dict->key_size, dict->num_keys, stream);
+}
+
+char* full_dict_associate(FullDict *dict, int(*compare)(const void *, const void *), char *buffer) {
+    *dict = *((FullDict*) buffer);
+    buffer += sizeof(FullDict);
+    dict->compare = compare;
+    dict->keys = (void*) buffer;
+    buffer += dict->num_keys * dict->key_size;
+    return buffer;
+}

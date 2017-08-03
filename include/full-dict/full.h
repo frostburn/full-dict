@@ -2,6 +2,7 @@
 #define FULL_DICT_FULL_H_GUARD
 
 #include <stddef.h>
+#include <stdio.h>
 
 /*
     Low memory arbitrary key indexer
@@ -33,5 +34,7 @@ void full_dict_add(FullDict *dict, void *key);
 void full_dict_finalize(FullDict *dict);
 size_t full_dict_index(FullDict *dict, void *key);
 void* full_dict_key(FullDict *dict, size_t index);
+void full_dict_write(FullDict *dict, FILE *stream);
+char* full_dict_associate(FullDict *dict, int(*compare)(const void *, const void *), char *buffer);
 
 #endif /* !FULL_DICT_FULL_H_GUARD */
