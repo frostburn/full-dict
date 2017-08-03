@@ -42,5 +42,7 @@ int main() {
     value = 3;
     assert(full_dict_index(dict, &value) == 2);
 
+    assert(*((short int*)full_dict_key(dict, 0)) == 1);
+
     full_dict_delete(dict);
 }

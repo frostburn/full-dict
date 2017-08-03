@@ -32,5 +32,6 @@ void full_dict_append(FullDict *dict, void *key);
 void full_dict_add(FullDict *dict, void *key);
 void full_dict_finalize(FullDict *dict);
 size_t full_dict_index(FullDict *dict, void *key);
+void* full_dict_key(FullDict *dict, size_t index);
 
 #endif /* !FULL_DICT_FULL_H_GUARD */

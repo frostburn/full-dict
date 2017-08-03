@@ -83,3 +83,8 @@ size_t full_dict_index(FullDict *dict, void *key) {
     void *result = bsearch(key, dict->keys, dict->num_sorted, dict->key_size, dict->compare);
     return (result - dict->keys) / dict->key_size;
 }
+
+void* full_dict_key(FullDict *dict, size_t index) {
+    assert(dict->valid);
+    return dict->keys + index * dict->key_size;
+}
