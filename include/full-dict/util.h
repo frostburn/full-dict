@@ -3,10 +3,14 @@
 
 #include <stddef.h>
 
-size_t ceil_div(size_t x, size_t y) {
-    if (x == 0) {
-        return 0;
-    }
-    return 1 + ((x - 1) / y);
-}
+typedef struct MemoryMap {
+    int file_descriptor;
+    size_t length;
+    char *buffer;
+} MemoryMap;
+
+size_t ceil_div(size_t x, size_t y);
+
+char* file_to_buffer(char *filename);
+
 #endif
