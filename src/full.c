@@ -89,6 +89,39 @@ void* full_dict_key(FullDict *dict, size_t index) {
     return dict->keys + index * dict->key_size;
 }
 
+FullDict* full_dict_merge(FullDict *a, FullDict *b) {
+    assert(a->valid);
+    assert(b->valid);
+    assert(a->key_size == b->key_size);
+    FullDict *dict = full_dict_new(a->key_size, a->compare);
+    void *last_a = a->keys;
+    void *last_b = b->keys;
+    while (last_a < a->keys + a->key_size * a->num_keys && last_b < b->keys + b->key_size * b->num_keys) {
+        int cmp = dict->compare(last_a, last_b);
+        if (cmp < 0) {
+            full_dict_append(dict, last_a);
+            last_a += dict->key_size;
+        } else if (cmp > 0) {
+            full_dict_append(dict, last_b);
+            last_b += dict->key_size;
+        } else {
+            full_dict_append(dict, last_a);
+            last_a += dict->key_size;
+            last_b += dict->key_size;
+        }
+    }
+    while (last_a < a->keys + a->key_size * a->num_keys) {
+        full_dict_append(dict, last_a);
+        last_a += dict->key_size;
+    }
+    while (last_b < b->keys + b->key_size * b->num_keys) {
+        full_dict_append(dict, last_b);
+        last_b += dict->key_size;
+    }
+    full_dict_finalize(dict);
+    return dict;
+}
+
 void full_dict_write(FullDict *dict, FILE *stream) {
     fwrite((void*) dict, sizeof(FullDict), 1, stream);
     fwrite((void*) dict->keys, dict->key_size, dict->num_keys, stream);
