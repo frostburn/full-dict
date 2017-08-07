@@ -127,14 +127,14 @@ void full_dict_write(FullDict *dict, FILE *stream) {
     fwrite((void*) dict->keys, dict->key_size, dict->num_keys, stream);
 }
 
-FullDict* full_dict_read(FILE *stream) {
+FullDict* full_dict_read(FILE *stream, int(*compare)(const void *, const void *)) {
     FullDict *dict = malloc(sizeof(FullDict));
     fread((void*) dict, sizeof(FullDict), 1, stream);
+    dict->compare = compare;
     dict->keys = malloc(dict->key_size * dict->num_keys);
     fread((void*) dict->keys, dict->key_size, dict->num_keys, stream);
     return dict;
 }
-
 char* full_dict_associate(FullDict *dict, int(*compare)(const void *, const void *), char *buffer) {
     *dict = *((FullDict*) buffer);
     buffer += sizeof(FullDict);

@@ -18,7 +18,7 @@ int main() {
     fclose(stream);
 
     stream = fmemopen(buffer, size, "r");
-    FullDict *another = full_dict_read(stream);
+    FullDict *another = full_dict_read(stream, compare_keys);
     fclose(stream);
 
     FullDict *other = malloc(sizeof(FullDict));

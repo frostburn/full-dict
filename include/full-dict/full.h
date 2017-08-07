@@ -36,7 +36,7 @@ size_t full_dict_index(FullDict *dict, void *key);
 void* full_dict_key(FullDict *dict, size_t index);
 FullDict* full_dict_merge(FullDict *a, FullDict *b);
 void full_dict_write(FullDict *dict, FILE *stream);
-FullDict* full_dict_read(FILE *stream);
+FullDict* full_dict_read(FILE *stream, int(*compare)(const void *, const void *));
 char* full_dict_associate(FullDict *dict, int(*compare)(const void *, const void *), char *buffer);
 
 #endif /* !FULL_DICT_FULL_H_GUARD */
